@@ -1,0 +1,6 @@
+db/.idea
+db/.env
+tg/.idea
+tg/__pycache__
+tg/venv
+.idea
