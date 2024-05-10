@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:14.3-alpine
     ports:
-      - "5432:5432"
+      - "8765:5432"
     env_file:
       - .env
     environment:

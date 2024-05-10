@@ -4,3 +4,4 @@ tg/.idea
 tg/__pycache__
 tg/venv
 .idea
+tg/.env
