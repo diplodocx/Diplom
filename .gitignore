@@ -5,3 +5,7 @@ tg/__pycache__
 tg/venv
 .idea
 tg/.env
+panel/.idea
+panel/__pycache__
+panel/venv
+panel/.env
