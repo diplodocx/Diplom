@@ -50,5 +50,6 @@ CREATE TABLE Analytics (
     FOREIGN KEY (action_id) REFERENCES Action(action_id)
 );
 
-INSERT INTO Action
-VALUES (1, 'floor move', 'Move up to a specific floor');
+INSERT INTO Action VALUES
+(1, 'floor move', 'Move up to a specific floor'),
+(2, 'light switch', 'Switch the light on a button');

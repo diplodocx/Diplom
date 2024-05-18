@@ -10,3 +10,6 @@ panel/__pycache__
 panel/venv
 panel/.env
 tg/tmp.wav
+dashboard/venv
+dashboard/.env
+dashboard/__pycache__

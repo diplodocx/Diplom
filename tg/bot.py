@@ -25,8 +25,8 @@ def process_audio(message):
     print(recognize())
 
 
-@bot.message_handler(commands=['start'])
-def start(message):
+@bot.message_handler(commands=['move'])
+def move(message):
     keyboard = types.InlineKeyboardMarkup(row_width=2)  # Создаем клавиатуру с двумя кнопками в строке
     btn_1 = types.InlineKeyboardButton("Этаж 1", callback_data='button_1')
     btn_2 = types.InlineKeyboardButton("Этаж 2", callback_data='button_2')
@@ -35,6 +35,15 @@ def start(message):
     bot.send_message(message.chat.id, 'Выберите кнопку:', reply_markup=keyboard)  # Отправляем сообщение с клавиатурой
 
 
+@bot.message_handler(commands=['light'])
+def light(message):
+    keyboard = types.InlineKeyboardMarkup(row_width=2)  # Создаем клавиатуру с двумя кнопками в строке
+    btn_1 = types.InlineKeyboardButton("Лампочка 1", callback_data='button_3')
+    btn_2 = types.InlineKeyboardButton("Лампочка 2", callback_data='button_4')
+    btn_3 = types.InlineKeyboardButton("Лампочка 3", callback_data='test')
+    keyboard.add(btn_1, btn_2, btn_3)  # Добавляем кнопки на клавиатуру
+    bot.send_message(message.chat.id, 'Выберите кнопку:', reply_markup=keyboard)  # Отправляем сообщение с клавиатурой
+
 @bot.callback_query_handler(func=lambda call: True)  # Обработчик для callback-запросов
 def callback_inline(call):
     insert_action_data(1)
@@ -42,6 +51,10 @@ def callback_inline(call):
         act(call.data, 'up', call, 1)
     elif call.data == 'button_2':
         act(call.data, 'up', call, 1)
+    elif call.data == 'button_3':
+        act(call.data, 'up', call, 2)
+    elif call.data == 'button_4':
+        act(call.data, 'up', call, 2)
     elif call.data == 'test':
         act(call.data, 'up', call, 1)
 
