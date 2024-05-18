@@ -9,3 +9,4 @@ panel/.idea
 panel/__pycache__
 panel/venv
 panel/.env
+tg/tmp.wav

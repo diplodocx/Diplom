@@ -1,8 +1,10 @@
 import telebot
-from tcp import send_tcp_request
-from db import insert_action_data, get_command
-from config import TOKEN
 from telebot import types
+
+from config import TOKEN
+from db import insert_action_data, get_command
+from tcp import send_tcp_request
+from speech_encoder import recognize
 
 bot = telebot.TeleBot(TOKEN, parse_mode=None)
 
@@ -12,6 +14,15 @@ def act(button_name, param, call, action_type_id):
     command = get_command(button_name, param)
     res = send_tcp_request(f'{command[0]}, {command[1]}')
     bot.send_message(call.message.chat.id, res)
+
+
+@bot.message_handler(content_types=['voice'])
+def process_audio(message):
+    file_info = bot.get_file(message.voice.file_id)
+    downloaded_file = bot.download_file(file_info.file_path)
+    with open('tmp.wav', 'wb') as new_file:
+        new_file.write(downloaded_file)
+    print(recognize())
 
 
 @bot.message_handler(commands=['start'])
