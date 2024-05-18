@@ -12,7 +12,7 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['move'])
 def move_engine(message):
-    insert_action_data('floor move')
+    insert_action_data(1)
     res = send_tcp_request('up')
     bot.reply_to(message, res)
 

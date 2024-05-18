@@ -20,7 +20,6 @@ CREATE TABLE Var (
     variable_id SERIAL,
     var_name TEXT,
     var_type TEXT,
-    config_id TEXT,
     PRIMARY KEY (variable_id)
 );
 

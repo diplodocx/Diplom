@@ -4,7 +4,14 @@ from datetime import datetime
 
 
 def get_command():
-    pass
+    conn = connect_db()
+    cur = conn.cursor()
+    select_statement = """
+        SELECT MAX(log_id) FROM Analytics;
+        """
+    cur.execute(select_statement)
+    elements = cur.fetchall()
+    return elements
 
 
 def insert_action_data(action_type_id: int):
