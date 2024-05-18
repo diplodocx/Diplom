@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS Config;
 CREATE TABLE Config (
     variable_id SERIAL,
     button_id INTEGER NOT NULL,
-    config_id TEXT NOT NULL,
+    config_id INTEGER NOT NULL,
     PRIMARY KEY (config_id),
     FOREIGN KEY (variable_id) REFERENCES Var(variable_id),
     FOREIGN KEY (button_id) REFERENCES Button(button_id)

@@ -2,31 +2,36 @@ from db_connect import connect_db
 from models import Config, Button, Scenario, Var
 
 
-# config
-def get_configs():
+def get(table_name):
     conn = connect_db()
     cur = conn.cursor()
-    select_statement = """
-            SELECT * FROM Config;
+    select_statement = f"""
+                SELECT * FROM {table_name};
+                """
+    cur.execute(select_statement)
+    res = cur.fetchall()
+    return res
+
+
+def get_first(cur, var, table_name):
+    select_statement = f"""
+            SELECT MAX({var}) FROM {table_name};
             """
     cur.execute(select_statement)
-    configs = cur.fetchall()
-    return configs
-    # return [
-    #     {'id': 1, 'button_name': 'button_floor_move_1', 'variable': 'set_lift_1_floor'},
-    #     {'id': 2, 'button_name': 'button_floor_move_2', 'variable': 'set_lift_2_floor'}
-    # ]
+    max_id = cur.fetchone()[0]
+    cur_id = max_id + 1 if max_id else 1
+    return cur_id
+
+
+# config
+def get_configs():
+    return get('Config')
 
 
 def create_config(config: Config):
     conn = connect_db()
     cur = conn.cursor()
-    select_statement = """
-        SELECT MAX(config_id) FROM Config;
-        """
-    cur.execute(select_statement)
-    max_id = cur.fetchone()[0]
-    cur_id = max_id + 1 if max_id else 1
+    cur_id = get_first(cur, 'config_id', 'Config')
     insert_statement = """
         INSERT INTO Config (config_id, variable_id, button_id) VALUES (%s, %s, %s);
         """
@@ -39,12 +44,7 @@ def create_config(config: Config):
 def create_button(button: Button):
     conn = connect_db()
     cur = conn.cursor()
-    select_statement = """
-        SELECT MAX(button_id) FROM Button;
-        """
-    cur.execute(select_statement)
-    max_id = cur.fetchone()[0]
-    cur_id = max_id + 1 if max_id else 1
+    cur_id = get_first(cur, 'button_id', 'Button')
     insert_statement = """
         INSERT INTO Button (button_id, button_name, scen_id) VALUES (%s, %s, %s);
         """
@@ -54,26 +54,14 @@ def create_button(button: Button):
 
 
 def get_buttons():
-    conn = connect_db()
-    cur = conn.cursor()
-    select_statement = """
-                SELECT * FROM Button;
-                """
-    cur.execute(select_statement)
-    buttons = cur.fetchall()
-    return buttons
+    return get('Button')
 
 
 # scenario
 def create_scen(scen: Scenario):
     conn = connect_db()
     cur = conn.cursor()
-    select_statement = """
-        SELECT MAX(scen_id) FROM Scenario;
-        """
-    cur.execute(select_statement)
-    max_id = cur.fetchone()[0]
-    cur_id = max_id + 1 if max_id else 1
+    cur_id = get_first(cur, 'scen_id', 'Scenario')
     insert_statement = """
         INSERT INTO Scenario (scen_id, scen_desc, scen_name) VALUES (%s, %s, %s);
         """
@@ -83,26 +71,14 @@ def create_scen(scen: Scenario):
 
 
 def get_scens():
-    conn = connect_db()
-    cur = conn.cursor()
-    select_statement = """
-                SELECT * FROM Scenario;
-                """
-    cur.execute(select_statement)
-    scens = cur.fetchall()
-    return scens
+    return get('Scenario')
 
 
 # variable
 def create_var(var: Var):
     conn = connect_db()
     cur = conn.cursor()
-    select_statement = """
-        SELECT MAX(variable_id) FROM Var;
-        """
-    cur.execute(select_statement)
-    max_id = cur.fetchone()[0]
-    cur_id = max_id + 1 if max_id else 1
+    cur_id = get_first(cur, 'variable_id', 'Var')
     insert_statement = """
         INSERT INTO Var (variable_id, var_name, var_type) VALUES (%s, %s, %s);
         """
@@ -112,11 +88,4 @@ def create_var(var: Var):
 
 
 def get_vars():
-    conn = connect_db()
-    cur = conn.cursor()
-    select_statement = """
-                SELECT * FROM Var;
-                """
-    cur.execute(select_statement)
-    vars = cur.fetchall()
-    return vars
+    return get('Var')
