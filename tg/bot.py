@@ -1,8 +1,9 @@
 import telebot
 from tcp import send_tcp_request
-from db import insert_action_data
+from db import insert_action_data, get_command
+from config import TOKEN
 
-bot = telebot.TeleBot("token", parse_mode=None)
+bot = telebot.TeleBot(TOKEN, parse_mode=None)
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -13,7 +14,8 @@ def send_welcome(message):
 @bot.message_handler(commands=['move'])
 def move_engine(message):
     insert_action_data(1)
-    res = send_tcp_request('up')
+    command = get_command('test', 'up')
+    res = send_tcp_request(f'{command[0]}, {command[1]}')
     bot.reply_to(message, res)
 
 
