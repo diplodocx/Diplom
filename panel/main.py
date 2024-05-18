@@ -28,6 +28,7 @@ async def root(button: Button):
     res = db.create_button(button)
     return res
 
+
 @app.get("/get_vars")
 async def root():
     res = db.get_vars()
@@ -38,6 +39,7 @@ async def root():
 async def root(var: Var):
     res = db.create_var(var)
     return res
+
 
 @app.get("/get_configs")
 async def root():

@@ -12,7 +12,7 @@ bot = telebot.TeleBot(TOKEN, parse_mode=None)
 def act(button_name, param, call, action_type_id):
     insert_action_data(action_type_id)
     command = get_command(button_name, param)
-    res = send_tcp_request(f'{command[0]}, {command[1]}')
+    res = send_tcp_request(f'{command[0]}{command[1]}')
     bot.send_message(call.message.chat.id, res)
 
 
@@ -38,25 +38,26 @@ def move(message):
 @bot.message_handler(commands=['light'])
 def light(message):
     keyboard = types.InlineKeyboardMarkup(row_width=2)  # Создаем клавиатуру с двумя кнопками в строке
-    btn_1 = types.InlineKeyboardButton("Лампочка 1", callback_data='button_3')
-    btn_2 = types.InlineKeyboardButton("Лампочка 2", callback_data='button_4')
+    btn_1 = types.InlineKeyboardButton("Лампочка 1 выкл", callback_data='button_3')
+    btn_2 = types.InlineKeyboardButton("Лампочка 1 вкл", callback_data='button_4')
     btn_3 = types.InlineKeyboardButton("Лампочка 3", callback_data='test')
     keyboard.add(btn_1, btn_2, btn_3)  # Добавляем кнопки на клавиатуру
     bot.send_message(message.chat.id, 'Выберите кнопку:', reply_markup=keyboard)  # Отправляем сообщение с клавиатурой
+
 
 @bot.callback_query_handler(func=lambda call: True)  # Обработчик для callback-запросов
 def callback_inline(call):
     insert_action_data(1)
     if call.data == 'button_1':
-        act(call.data, 'up', call, 1)
+        act(call.data, '01', call, 1)
     elif call.data == 'button_2':
-        act(call.data, 'up', call, 1)
+        act(call.data, '02', call, 1)
     elif call.data == 'button_3':
-        act(call.data, 'up', call, 2)
+        act(call.data, '00', call, 2)
     elif call.data == 'button_4':
-        act(call.data, 'up', call, 2)
+        act(call.data, '00', call, 2)
     elif call.data == 'test':
-        act(call.data, 'up', call, 1)
+        act(call.data, '00', call, 1)
 
 
 bot.infinity_polling()

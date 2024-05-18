@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Config(BaseModel):
@@ -17,5 +17,5 @@ class Scenario(BaseModel):
 
 
 class Var(BaseModel):
-    var_name: str
+    var_name: str = Field(default='0x00')
     var_type: str
