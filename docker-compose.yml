@@ -1,0 +1,12 @@
+version: '3'
+services:
+  api:
+    build: ./panel
+    ports:
+      - "8080:8080"
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "8050:8050"
+  bot:
+    build: ./tg

@@ -16,13 +16,23 @@ def act(button_name, param, call, action_type_id):
     bot.send_message(call.message.chat.id, res)
 
 
+def voice_act(button_name, param, message, action_type_id):
+    insert_action_data(action_type_id)
+    command = get_command(button_name, param)
+    res = send_tcp_request(f'{command[0]}{command[1]}')
+    bot.send_message(message.chat.id, res)
+
+
 @bot.message_handler(content_types=['voice'])
 def process_audio(message):
     file_info = bot.get_file(message.voice.file_id)
     downloaded_file = bot.download_file(file_info.file_path)
     with open('tmp.wav', 'wb') as new_file:
         new_file.write(downloaded_file)
-    print(recognize())
+    text = recognize()
+    if 'этаж' in text:
+        if '2' in text:
+            voice_act('button_2', '02', message, 1)
 
 
 @bot.message_handler(commands=['move'])
