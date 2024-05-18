@@ -53,3 +53,20 @@ CREATE TABLE Analytics (
 INSERT INTO Action VALUES
 (1, 'floor move', 'Move up to a specific floor'),
 (2, 'light switch', 'Switch the light on a button');
+
+DROP VIEW IF EXISTS analytics_log;
+CREATE VIEW analytics_log AS
+SELECT b.action_name, DATE_TRUNC('hour', insert_time) AS hour, COUNT(*) AS cnt
+FROM Analytics AS a
+INNER JOIN Action AS b
+ON a.action_id = b.action_id
+GROUP BY b.action_name, DATE_TRUNC('hour', insert_time)
+ORDER BY hour;
+
+DROP VIEW IF EXISTS analytics_log_distr;
+CREATE VIEW analytics_log_distr AS
+SELECT b.action_name, COUNT(*) AS cnt
+FROM Analytics AS a
+INNER JOIN Action AS b
+ON a.action_id = b.action_id
+GROUP BY b.action_name;
